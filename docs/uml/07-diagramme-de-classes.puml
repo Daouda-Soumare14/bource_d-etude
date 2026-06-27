@@ -1,0 +1,227 @@
+@startuml diagramme-de-classes
+title Diagramme de classes — Plateforme DGBE
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Helvetica"
+skinparam class {
+  BackgroundColor #EEFDF3
+  BorderColor #0F904C
+  ArrowColor #0D4A2E
+  FontColor #0D4A2E
+  HeaderBackgroundColor #0F904C
+}
+skinparam classAttributeIconSize 0
+hide circle
+
+' =================== ENUMERATIONS ===================
+enum StatutDemande {
+  Brouillon
+  Soumise
+  En_verification
+  Acceptee
+  Refusee
+  Payee
+}
+
+enum StatutPaiement {
+  paye
+  en_attente
+  annule
+}
+
+enum StatutPiece {
+  En_attente
+  Validee
+  Rejetee
+}
+
+enum StatutReclamation {
+  Ouverte
+  En_cours
+  Traitee
+  Fermee
+}
+
+' =================== CLASSES ===================
+class Utilisateur {
+  +id : int
+  +nom : string
+  +prenom : string
+  +email : string
+  +telephone : string
+  +photo : string
+  +adresse : string
+  +password : string
+  +actif : bool
+  +email_verified_at : datetime
+  --
+  +nomComplet() : string
+  +hasRole(role) : bool
+}
+
+class Role {
+  +id : int
+  +name : string
+  +guard_name : string
+}
+
+class Permission {
+  +id : int
+  +name : string
+}
+
+class Etudiant {
+  +id : int
+  +utilisateur_id : int
+  +matricule : string
+  +date_naissance : date
+  +sexe : char
+  +region : string
+  +niveau : string
+}
+
+class Universite {
+  +id : int
+  +nom : string
+  +sigle : string
+  +type : string
+  +adresse : string
+  +telephone : string
+  +region : string
+}
+
+class Faculte {
+  +id : int
+  +universite_id : int
+  +nom : string
+}
+
+class Filiere {
+  +id : int
+  +faculte_id : int
+  +nom : string
+}
+
+class AnneeAcademique {
+  +id : int
+  +libelle : string
+  +date_debut : date
+  +date_fin : date
+  +active : bool
+}
+
+class TypeBourse {
+  +id : int
+  +nom : string
+  +montant : decimal
+  +description : string
+}
+
+class DemandeBourse {
+  +id : int
+  +etudiant_id : int
+  +annee_id : int
+  +type_bourse_id : int
+  +date_demande : date
+  +montant_demande : decimal
+  +statut : StatutDemande
+  +observation : string
+  --
+  +soumettre() : void
+  +changerStatut(s) : void
+}
+
+class PieceJustificative {
+  +id : int
+  +demande_id : int
+  +nom_document : string
+  +chemin : string
+  +statut : StatutPiece
+  +motif_rejet : string
+}
+
+class Commission {
+  +id : int
+  +nom : string
+  +date_reunion : date
+  +description : string
+  --
+  +affecterMembres(m) : void
+}
+
+class Decision {
+  +id : int
+  +commission_id : int
+  +demande_id : int
+  +decision : string
+  +observation : string
+  +montant_accorde : decimal
+  +date_decision : date
+  --
+  +montantPaye() : decimal
+  +resteAPayer() : decimal
+}
+
+class Paiement {
+  +id : int
+  +decision_id : int
+  +montant : decimal
+  +date_paiement : date
+  +mode_paiement : string
+  +reference : string
+  +statut : StatutPaiement
+}
+
+class Reclamation {
+  +id : int
+  +etudiant_id : int
+  +demande_id : int
+  +objet : string
+  +description : string
+  +document : string
+  +statut : StatutReclamation
+  +reponse : string
+}
+
+class Notification {
+  +id : int
+  +utilisateur_id : int
+  +titre : string
+  +contenu : string
+  +type : string
+  +lu : bool
+}
+
+' =================== RELATIONS ===================
+Utilisateur "1" -- "0..1" Etudiant : possède >
+Utilisateur "*" -- "*" Role : a >
+Role "*" -- "*" Permission : accorde >
+Utilisateur "1" -- "*" Notification : reçoit >
+Utilisateur "*" -- "*" Commission : membre de >
+
+Universite "1" -- "*" Faculte : regroupe >
+Faculte "1" -- "*" Filiere : propose >
+Universite "1" -- "*" Etudiant : accueille >
+Faculte "1" -- "*" Etudiant
+Filiere "1" -- "*" Etudiant : inscrit >
+
+Etudiant "1" -- "*" DemandeBourse : dépose >
+TypeBourse "1" -- "*" DemandeBourse : concerne >
+AnneeAcademique "1" -- "*" DemandeBourse : pour >
+DemandeBourse "1" -- "*" PieceJustificative : justifiée par >
+
+Commission "1" -- "*" Decision : rend >
+DemandeBourse "1" -- "1" Decision : aboutit à >
+Decision "1" -- "*" Paiement : génère >
+
+Etudiant "1" -- "*" Reclamation : formule >
+DemandeBourse "1" -- "0..*" Reclamation : visée par >
+
+' Liens vers les énumérations (dépendances de typage)
+DemandeBourse ..> StatutDemande
+Paiement ..> StatutPaiement
+PieceJustificative ..> StatutPiece
+Reclamation ..> StatutReclamation
+
+@enduml

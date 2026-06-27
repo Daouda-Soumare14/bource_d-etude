@@ -1,0 +1,39 @@
+@startuml cas-service-financier
+title Diagramme de cas d'utilisation — Service financier
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Helvetica"
+skinparam usecase {
+  BackgroundColor #EEFDF3
+  BorderColor #0F904C
+}
+skinparam actor {
+  BackgroundColor #EEFDF3
+  BorderColor #0F904C
+}
+
+left to right direction
+
+actor "Service financier" as Finance
+
+rectangle "Plateforme DGBE" {
+  usecase "S'authentifier" as UC0
+  usecase "Consulter les étudiants\nretenus" as UC1
+  usecase "Enregistrer un paiement" as UC2
+  usecase "Suivre les versements\n(cumul, reste à payer)" as UC3
+  usecase "Annuler un paiement" as UC4
+  usecase "Imprimer les états\nde paiement" as UC5
+}
+
+Finance --> UC1
+Finance --> UC2
+Finance --> UC3
+Finance --> UC5
+
+UC1 ..> UC0 : <<include>>
+UC2 ..> UC1 : <<include>>
+UC4 ..> UC2 : <<extend>>
+UC5 ..> UC3 : <<extend>>
+
+@enduml

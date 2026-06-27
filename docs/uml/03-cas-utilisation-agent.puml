@@ -1,0 +1,46 @@
+@startuml cas-agent
+title Diagramme de cas d'utilisation — Agent de traitement
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Helvetica"
+skinparam usecase {
+  BackgroundColor #EEFDF3
+  BorderColor #0F904C
+}
+skinparam actor {
+  BackgroundColor #EEFDF3
+  BorderColor #0F904C
+}
+
+left to right direction
+
+actor "Agent de traitement" as Agent
+
+rectangle "Plateforme DGBE" {
+  usecase "S'authentifier" as UC0
+  usecase "Consulter les demandes" as UC1
+  usecase "Vérifier les pièces\njustificatives" as UC2
+  usecase "Valider une pièce" as UC3
+  usecase "Demander une correction\n(rejeter une pièce)" as UC4
+  usecase "Prendre le dossier\nen vérification" as UC5
+  usecase "Valider le dossier" as UC6
+  usecase "Rejeter un dossier\nincomplet" as UC7
+  usecase "Transmettre à\nla commission" as UC8
+}
+
+Agent --> UC1
+Agent --> UC2
+Agent --> UC5
+Agent --> UC6
+Agent --> UC7
+Agent --> UC8
+
+UC1 ..> UC0 : <<include>>
+UC2 ..> UC1 : <<include>>
+UC3 ..> UC2 : <<extend>>
+UC4 ..> UC2 : <<extend>>
+UC6 ..> UC2 : <<include>>
+UC8 ..> UC6 : <<extend>>
+
+@enduml

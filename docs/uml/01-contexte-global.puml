@@ -1,0 +1,44 @@
+@startuml contexte-global
+' Diagramme de contexte global — Plateforme DGBE de gestion des bourses
+title Diagramme de contexte global — Plateforme DGBE
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Helvetica"
+skinparam actor {
+  BackgroundColor #EEFDF3
+  BorderColor #0F904C
+}
+skinparam rectangle {
+  BackgroundColor #0F904C
+  FontColor #FFFFFF
+  BorderColor #0D4A2E
+  FontStyle bold
+}
+
+left to right direction
+
+actor "Administrateur" as Admin
+actor "Agent de\ntraitement" as Agent
+actor "Commission" as Commission
+actor "Service\nfinancier" as Finance
+actor "Étudiant" as Etudiant
+
+rectangle "  PLATEFORME DGBE\n  Gestion & Suivi des\n  Bourses Étudiantes  " as Systeme
+
+Etudiant --> Systeme : dépose une demande,\nsuit son dossier,\nfait une réclamation
+Systeme --> Etudiant : notifications,\nattestations
+
+Agent --> Systeme : vérifie les pièces,\nvalide / rejette les dossiers
+Systeme --> Agent : dossiers à traiter
+
+Commission --> Systeme : attribue / refuse\nles bourses, observations
+Systeme --> Commission : dossiers à statuer
+
+Finance --> Systeme : enregistre les paiements,\nédite les états
+Systeme --> Finance : bénéficiaires retenus
+
+Admin --> Systeme : gère utilisateurs,\nétablissements, référentiels,\nsupervise
+Systeme --> Admin : statistiques & rapports
+
+@enduml

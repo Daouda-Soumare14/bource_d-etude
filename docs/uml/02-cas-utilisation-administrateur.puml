@@ -1,0 +1,50 @@
+@startuml cas-administrateur
+title Diagramme de cas d'utilisation — Administrateur
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Helvetica"
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #EEFDF3
+  BorderColor #0F904C
+}
+skinparam actor {
+  BackgroundColor #EEFDF3
+  BorderColor #0F904C
+}
+
+left to right direction
+
+actor "Administrateur" as Admin
+
+rectangle "Plateforme DGBE" {
+  usecase "S'authentifier" as UC0
+  usecase "Gérer les utilisateurs\n(rôles & permissions)" as UC1
+  usecase "Gérer les établissements\n(universités, facultés, filières)" as UC2
+  usecase "Gérer les années\nacadémiques" as UC3
+  usecase "Gérer les types\nde bourses" as UC4
+  usecase "Gérer les commissions" as UC5
+  usecase "Consulter les\nstatistiques" as UC6
+  usecase "Produire des rapports" as UC7
+  usecase "Superviser la\nplateforme" as UC8
+}
+
+Admin --> UC1
+Admin --> UC2
+Admin --> UC3
+Admin --> UC4
+Admin --> UC5
+Admin --> UC6
+Admin --> UC7
+Admin --> UC8
+
+UC1 ..> UC0 : <<include>>
+UC2 ..> UC0 : <<include>>
+UC3 ..> UC0 : <<include>>
+UC4 ..> UC0 : <<include>>
+UC5 ..> UC0 : <<include>>
+UC6 ..> UC0 : <<include>>
+UC7 ..> UC6 : <<extend>>
+
+@enduml

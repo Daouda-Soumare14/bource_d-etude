@@ -1,0 +1,40 @@
+@startuml cas-commission
+title Diagramme de cas d'utilisation — Commission
+
+skinparam backgroundColor #FFFFFF
+skinparam shadowing false
+skinparam defaultFontName "Helvetica"
+skinparam usecase {
+  BackgroundColor #EEFDF3
+  BorderColor #0F904C
+}
+skinparam actor {
+  BackgroundColor #EEFDF3
+  BorderColor #0F904C
+}
+
+left to right direction
+
+actor "Commission" as Commission
+
+rectangle "Plateforme DGBE" {
+  usecase "S'authentifier" as UC0
+  usecase "Consulter les dossiers\ntransmis" as UC1
+  usecase "Statuer sur une demande" as UC2
+  usecase "Attribuer une bourse\n(accepter)" as UC3
+  usecase "Modifier le montant\naccordé" as UC4
+  usecase "Refuser une demande" as UC5
+  usecase "Ajouter une observation" as UC6
+}
+
+Commission --> UC1
+Commission --> UC2
+
+UC1 ..> UC0 : <<include>>
+UC2 ..> UC1 : <<include>>
+UC3 ..> UC2 : <<extend>>
+UC4 ..> UC3 : <<extend>>
+UC5 ..> UC2 : <<extend>>
+UC6 ..> UC2 : <<extend>>
+
+@enduml
