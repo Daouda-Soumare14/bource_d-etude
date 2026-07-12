@@ -14,8 +14,8 @@ import { NgClass } from '@angular/common';
       <svg [attr.width]="size" [attr.height]="size" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="shrink-0">
         <defs>
           <linearGradient id="dgbeGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#1ab35f" />
-            <stop offset="1" stop-color="#0d4a2e" />
+            <stop stop-color="#3b82f6" />
+            <stop offset="1" stop-color="#1e3a8a" />
           </linearGradient>
         </defs>
         <!-- Écu -->
